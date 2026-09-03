@@ -26,6 +26,8 @@
 
 /**
  * This is a mutable c string representation.
+ * Functions that operates on strbuf_t may allocate,
+ * reallocate or free memory.
  */
 typedef struct {
     char *data;
@@ -34,7 +36,15 @@ typedef struct {
 } strbuf_t;
 
 int sb_init(strbuf_t *sb, size_t cap);
-int sb_init_str(strbuf_t *sb, const char *str, size_t len);
+int sb_init_str(strbuf_t *sb, const char *str, size_t slen);
+
+int sb_from_cstr(strbuf_t *sb, const char *cstr);
+
+int sb_append_cstr(strbuf_t *sb, char *cstr);
+int sb_append_char(strbuf_t *sb, char c);
+
+void sb_bzero(strbuf_t *sb);
+void sb_free(strbuf_t *sb);
 
 void sb_print_safe_stdout(const strbuf_t *sb);
 void sb_println_safe_stdout(const strbuf_t *sb);
