@@ -25,9 +25,11 @@
 #include <string.h>
 
 /**
- * This is a mutable c string representation.
- * Functions that operates on strbuf_t may allocate,
- * reallocate or free memory.
+ * Mutable C string representation.
+ *
+ * A strbuf_t owns its underlying memory and maintains a null-terminated
+ * character buffer. Operations on strbuf_t may allocate, reallocate,
+ * modify, or free the owned memory as needed.
  */
 typedef struct {
     char *data;
