@@ -121,6 +121,26 @@ int sb_init_str(strbuf_t *sb, const char *str, size_t slen)
     return 0;
 }
 
+inline const char *sb_cstr(const strbuf_t *sb)
+{
+    return sb->data;
+}
+
+inline size_t sb_len(const strbuf_t *sb)
+{
+    return sb->len;
+}
+
+inline size_t sb_capacity(const strbuf_t *sb)
+{
+    return sb->cap;
+}
+
+inline int sb_empty(const strbuf_t *sb)
+{
+    return sb->len > 0;
+}
+
 int sb_from_cstr(strbuf_t *sb, const char *cstr)
 {
     SB_RET_ERR_ON_NULL(sb, "strbuf_t* cannot be null");

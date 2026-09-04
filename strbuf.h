@@ -38,6 +38,11 @@ typedef struct {
 int sb_init(strbuf_t *sb, size_t cap);
 int sb_init_str(strbuf_t *sb, const char *str, size_t slen);
 
+const char *sb_cstr(const strbuf_t *sb);
+size_t sb_len(const strbuf_t *str);
+size_t sb_capacity(const strbuf_t *str);
+int sb_empty(const strbuf_t *str);
+
 int sb_from_cstr(strbuf_t *sb, const char *cstr);
 
 int sb_append_cstr(strbuf_t *sb, const char *cstr);
