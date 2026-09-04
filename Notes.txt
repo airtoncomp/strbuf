@@ -1,4 +1,13 @@
 ===============================================================================
 About strbuf
 ===============================================================================
+
 * strbuf_t owns memory, mutates memory and manages capacity
+
+* strbuf_t works with c string (null '\0' terminated character)
+
+* Functions that write characters to the buffer such as sb_append_cstr(),
+  if there is no room in memory, the function reallocates memory. Such
+  approach allows the code to keep working on what it is supposed to do.
+  Users do not need to reserve memory, but if they want to, they can
+  achieve through the function sb_reserve().
