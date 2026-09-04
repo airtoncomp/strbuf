@@ -218,6 +218,15 @@ int sb_remove(strbuf_t *sb, size_t pos, size_t len)
     return 0;
 }
 
+int sb_remove_slice(strbuf_t *sb, size_t start_pos, size_t end_pos)
+{
+    SB_RET_ERR_ON_NULL(sb, "strbuf_t* cannot be null");
+    SB_RET_ERR_ON_NULL(sb->data, "string buffer *data is null");
+    SB_RET_ERR_ON_TRUE(start_pos > end_pos, "invalid start position");
+    size_t len = end_pos - start_pos + 1;
+    return sb_remove(sb, start_pos, len);
+}
+
 void sb_print_safe_stdout(const strbuf_t *sb)
 {
     if (!sb) {
