@@ -196,10 +196,13 @@ int sb_insert_at(strbuf_t *sb, size_t pos, const char *cstr)
     SB_RET_ERR_ON_NULL(sb->data, "string buffer *data is null");
     size_t len = strlen(cstr);
     size_t tot_len = sb->len + len + 1;
-    size_t new_cap = MAX(sb->cap * BUFLEN_GROWTH_FACTOR, tot_len);
-    if (alloc_or_realloc_buf(sb, new_cap) < 0)
-        return -1;
-    //TODO: alloc or realloc only if sb->cap - sb->len < strlen(cstr)
+    char *tmp = malloc(tot_len * sizeof(*tmp));
+    strncpy(tmp, sb->data, pos);
+    strncpy(tmp+pos, cstr, len);
+    strcpy(tmp+pos+len, sb->data+pos);
+    sb->data = tmp;
+    sb->data[tot_len] = '\0';
+    sb->len = tot_len;
     return 0;
 }
 
