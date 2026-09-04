@@ -61,4 +61,32 @@ void sb_free(strbuf_t *sb);
 void sb_print_safe_stdout(const strbuf_t *sb);
 void sb_println_safe_stdout(const strbuf_t *sb);
 
+/**
+ * Bridge helper for strview_t.
+ * https://github.com/airtoncomp/strview
+ *
+ * This macro provides a convenient way to create a strview_t from a
+ * strbuf_t without introducing a direct dependency on strview.h.
+ *
+ * Because it is a macro, the argument should be a simple strbuf_t pointer
+ * expression to avoid unintended multiple evaluations.
+ *
+ * For stricter type safety, the user may create the view explicitly:
+ *
+ *  strview_t sv = {
+ *       .data = sb_data(&sb),
+ *       .len = sb_len(&sb)
+ *  };
+ *
+ * The resulting strview_t does not own the underlying memory and may be
+ * invalidated by any strbuf operation that reallocates or frees its buffer.
+ *
+ */
+
+#define strbuf_to_strview(sb) \
+    ((strview_t) {            \
+        .data = (sb)->data,   \
+        .len = (sb)->len      \
+    })
+
 #endif
