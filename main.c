@@ -6,14 +6,12 @@
 void test_strbuf()
 {
     printf("--- BEGIN: TEST STRBUF ---\n");
-
     strbuf_t sb1;
     sb_init(&sb1, 100);
     sb_print_safe_stdout(&sb1);
     sb_free(&sb1);
 
-    strbuf_t sb2;
-    sb_init_str(&sb2, "test-strbuf", strlen("test-strbuf"));
+    strbuf_t sb2; sb_init_str(&sb2, "test-strbuf", strlen("test-strbuf"));
     //sb_print_safe_stdout(&sb2);
     sb_println_safe_stdout(&sb2);
     sb_free(&sb2);
@@ -35,7 +33,7 @@ void test_strbuf()
     sb_append_char(&sb4, 'g');
     sb_println_safe_stdout(&sb4);
     sb_free(&sb4);
-
+ 
     printf("--- END: TEST STRBUF ---\n");
 }
 
