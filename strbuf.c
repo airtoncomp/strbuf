@@ -68,6 +68,7 @@
 
 #define BUFLEN_GROWTH_FACTOR    2
 #define MAX(a, b)               ((a) > (b) ? (a) : (b))
+#define MIN(a, b)               ((a) < (b) ? (a) : (b))
 
 static int realloc_buf(strbuf_t *sb, size_t new_cap)
 {
@@ -203,6 +204,17 @@ int sb_insert_at(strbuf_t *sb, size_t pos, const char *cstr)
     sb->data = tmp;
     sb->data[tot_len] = '\0';
     sb->len = tot_len;
+    return 0;
+}
+
+int sb_remove(strbuf_t *sb, size_t pos, size_t len)
+{
+    SB_RET_ERR_ON_NULL(sb, "strbuf_t* cannot be null");
+    SB_RET_ERR_ON_NULL(sb->data, "string buffer *data is null");
+    strcpy(sb->data+pos, sb->data+pos+len);
+    size_t new_len = sb->len - len;
+    sb->data[new_len] = '\0';
+    sb->len = new_len;
     return 0;
 }
 

@@ -44,6 +44,8 @@ int sb_append_cstr(strbuf_t *sb, const char *cstr);
 int sb_append_char(strbuf_t *sb, char c);
 
 int sb_insert_at(strbuf_t *sb, size_t pos, const char *cstr);
+int sb_remove(strbuf_t *sb, size_t pos, size_t len);
+int sb_remove_from(strbuf_t *sb, size_t begin_pos, size_t end_pos);
 
 void sb_bzero(strbuf_t *sb);
 void sb_free(strbuf_t *sb);
