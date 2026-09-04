@@ -33,6 +33,13 @@ void test_strbuf()
     sb_append_char(&sb4, 'g');
     sb_println_safe_stdout(&sb4);
     sb_free(&sb4);
+
+    strbuf_t sb5;
+    sb_init(&sb5, 10);
+    sb_from_cstr(&sb5, "test");
+    sb_insert_at(&sb5, 2, "xy");
+    sb_println_safe_stdout(&sb5);
+    sb_free(&sb5);
  
     printf("--- END: TEST STRBUF ---\n");
 }
