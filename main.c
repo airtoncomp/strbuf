@@ -40,6 +40,32 @@ void test_strbuf()
     sb_insert_at(&sb5, 2, "xy");
     sb_println_safe_stdout(&sb5);
     sb_free(&sb5);
+
+    strbuf_t sb6;
+    sb_init(&sb6, 10);
+    sb_from_cstr(&sb6, "test-remove");
+    sb_remove(&sb6, 4, 7);
+    sb_println_safe_stdout(&sb6);
+    sb_free(&sb6);
+
+    strbuf_t sb7;
+    sb_init(&sb7, 20);
+    sb_from_cstr(&sb7, "test-remove");
+    sb_remove(&sb7, 4, 1);
+    sb_println_safe_stdout(&sb7);
+    sb_free(&sb7);
+
+    strbuf_t sb8;
+    sb_init_str(&sb8, "test-remove", strlen("test-remove"));
+    sb_remove_slice(&sb8, 4, 10);
+    sb_println_safe_stdout(&sb8);
+    sb_free(&sb8);
+
+    strbuf_t sb9;
+    sb_init_str(&sb9, "test-remove", strlen("test-remove"));
+    sb_remove_slice(&sb9, 4, 4);
+    sb_println_safe_stdout(&sb9);
+    sb_free(&sb9);
  
     printf("--- END: TEST STRBUF ---\n");
 }
