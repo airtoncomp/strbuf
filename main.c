@@ -66,6 +66,12 @@ void test_strbuf()
     sb_remove_slice(&sb9, 4, 4);
     sb_println_safe_stdout(&sb9);
     sb_free(&sb9);
+
+    strbuf_t sb10;
+    sb_init_str(&sb10, "test-my-lib-strbuf", strlen("test-my-lib-strbuf"));
+    sb_replace(&sb10, 4, 3, "ing-c");
+    sb_println_safe_stdout(&sb10);
+    sb_free(&sb10);
  
     printf("--- END: TEST STRBUF ---\n");
 }
