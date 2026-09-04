@@ -96,6 +96,14 @@ static int alloc_buf(strbuf_t *sb, size_t cap)
     return 0;
 }
 
+static int alloc_or_realloc_buf(strbuf_t *sb, size_t cap)
+{
+    if (sb->cap == 0) {
+        return alloc_buf(sb, cap);
+    }
+    return realloc_buf(sb, cap);
+}
+
 int sb_init(strbuf_t *sb, size_t cap)
 {
     SB_RET_ERR_ON_NULL(sb, "strbuf_t* cannot be null");
@@ -115,15 +123,10 @@ int sb_init_str(strbuf_t *sb, const char *str, size_t slen)
 int sb_from_cstr(strbuf_t *sb, const char *cstr)
 {
     SB_RET_ERR_ON_NULL(sb, "strbuf_t* cannot be null");
-    SB_RET_ERR_ON_NULL(sb->data, "string buffer *data is null");
     size_t len = strlen(cstr);
-    if (sb->cap == 0) {
-        if (alloc_buf(sb, len) < 0)
-            return -1;
-    } else if (sb->cap > 0 && sb->cap <= len) {
-        if (realloc_buf(sb, sb->cap * BUFLEN_GROWTH_FACTOR) < 0)
-            return -1;
-    }
+    size_t new_cap = MAX(sb->cap * BUFLEN_GROWTH_FACTOR, len);
+    if (alloc_or_realloc_buf(sb, new_cap) < 0)
+        return -1;
     strcpy(sb->data, cstr);
     sb->len = len;
     return 0;
@@ -161,20 +164,15 @@ int sb_reserve(strbuf_t *sb, size_t required)
     return 0;
 }
 
-int sb_append_cstr(strbuf_t *sb, char *cstr)
+int sb_append_cstr(strbuf_t *sb, const char *cstr)
 {
     SB_RET_ERR_ON_NULL(sb, "strbuf_t* cannot be null");
     SB_RET_ERR_ON_NULL(cstr, "c string pointer cannot be null");
     size_t len = strlen(cstr);
     size_t tot_len = sb->len + len + 1;
     size_t new_cap = MAX(sb->cap * BUFLEN_GROWTH_FACTOR, tot_len);
-    if (sb->cap == 0) {
-        if (alloc_buf(sb, new_cap) < 0)
-            return -1;
-    } else {
-        if (realloc_buf(sb, sb->cap * BUFLEN_GROWTH_FACTOR) < 0)
-            return -1;
-    }
+    if (alloc_or_realloc_buf(sb, new_cap) < 0)
+        return -1;
     strcat(sb->data, cstr);
     sb->len += len;
     return 0;
@@ -185,15 +183,23 @@ int sb_append_char(strbuf_t *sb, char c)
     SB_RET_ERR_ON_NULL(sb, "strbuf_t* cannot be null");
     size_t tot_len = sb->len + 1 + 1;
     size_t new_cap = MAX(sb->cap * BUFLEN_GROWTH_FACTOR, tot_len);
-    if (sb->cap == 0) {
-        if (alloc_buf(sb, new_cap) < 0)
-            return -1;
-    } else {
-        if (realloc_buf(sb, sb->cap * BUFLEN_GROWTH_FACTOR) < 0)
-            return -1;
-    }
+    if (alloc_or_realloc_buf(sb, new_cap) < 0)
+        return -1;
     sb->data[sb->len++] = c;
     sb->data[sb->len] = '\0';
+    return 0;
+}
+
+int sb_insert_at(strbuf_t *sb, size_t pos, const char *cstr)
+{
+    SB_RET_ERR_ON_NULL(sb, "strbuf_t* cannot be null");
+    SB_RET_ERR_ON_NULL(sb->data, "string buffer *data is null");
+    size_t len = strlen(cstr);
+    size_t tot_len = sb->len + len + 1;
+    size_t new_cap = MAX(sb->cap * BUFLEN_GROWTH_FACTOR, tot_len);
+    if (alloc_or_realloc_buf(sb, new_cap) < 0)
+        return -1;
+    //TODO: alloc or realloc only if sb->cap - sb->len < strlen(cstr)
     return 0;
 }
 

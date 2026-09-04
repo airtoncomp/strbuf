@@ -40,7 +40,7 @@ int sb_init_str(strbuf_t *sb, const char *str, size_t slen);
 
 int sb_from_cstr(strbuf_t *sb, const char *cstr);
 
-int sb_append_cstr(strbuf_t *sb, char *cstr);
+int sb_append_cstr(strbuf_t *sb, const char *cstr);
 int sb_append_char(strbuf_t *sb, char c);
 
 void sb_bzero(strbuf_t *sb);
